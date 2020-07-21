@@ -1332,5 +1332,10 @@ public class FinestWebViewActivity extends AppCompatActivity
     public void onPageCommitVisible(WebView view, String url) {
       BroadCastManager.onPageCommitVisible(FinestWebViewActivity.this, key, url);
     }
+
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+      handler.proceed();
+    }
   }
 }
