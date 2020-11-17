@@ -1,6 +1,8 @@
 package com.thefinestartist.finestwebview;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -1338,8 +1340,23 @@ public class FinestWebViewActivity extends AppCompatActivity
     }
 
     @Override
-    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-      handler.proceed();
+    public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+      final AlertDialog.Builder builder = new AlertDialog.Builder(FinestWebViewActivity.this);
+      builder.setMessage("Invalid SSL Certificate");
+      builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          handler.proceed();
+        }
+      });
+      builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          handler.cancel();
+        }
+      });
+      final AlertDialog dialog = builder.create();
+      dialog.show();
     }
   }
 }
